@@ -1,4 +1,4 @@
-package com.master.eyubero.pfg
+package com.master.eyubero.pfg.ui.activities
 
 
 /**
@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.master.eyubero.pfg.R
 
 class SplashActivity : AppCompatActivity() {
 

@@ -1,7 +1,8 @@
-package com.master.eyubero.pfg
+package com.master.eyubero.pfg.ui.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.master.eyubero.pfg.R
 
 class MainActivity : AppCompatActivity() {
 
