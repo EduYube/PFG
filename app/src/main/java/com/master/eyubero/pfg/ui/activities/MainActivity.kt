@@ -24,12 +24,9 @@ class MainActivity : AppCompatActivity(), ResultsFragment.OnListFragmentInteract
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val transaction = supportFragmentManager.beginTransaction()
-        val runnable = Runnable {
 
-            transaction.add(ResultsFragment.newInstance(), ResultsFragment::class.java.simpleName.toString())
-            transaction.disallowAddToBackStack()
-            transaction.commit()
-        }
-        Handler().postDelayed(runnable,3000)
+        transaction.replace(R.id.main_activity,ResultsFragment.newInstance(), ResultsFragment::class.java.simpleName.toString())
+        transaction.commit()
+
     }
 }

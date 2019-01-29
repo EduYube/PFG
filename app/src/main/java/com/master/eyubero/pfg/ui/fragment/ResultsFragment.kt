@@ -28,23 +28,17 @@ class ResultsFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val progressBar = activity?.findViewById<ProgressBar>(R.id.progress_bar)
-        progressBar!!.visibility = View.VISIBLE
-
-        val runnable = Runnable {
-
-            progressBar.visibility = View.GONE
-        }
-        Handler().postDelayed(runnable,3000)
-
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_results, container, false)
+
+        val progressBar =  view.findViewById<ProgressBar>(R.id.progress_bar)
+        progressBar!!.visibility = View.VISIBLE
+        Handler().postDelayed( {
+
+            progressBar.visibility = View.GONE
+        },3000)
+
         activity!!.title = this.javaClass.simpleName.substringBefore("Fragment")
         // Set the adapter
         if (view is RecyclerView) {
