@@ -1,6 +1,10 @@
 package com.master.eyubero.pfg.ui.fragment
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -12,10 +16,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import com.master.eyubero.pfg.R
+import com.master.eyubero.pfg.databinding.FragmentResultsBinding
 import com.master.eyubero.pfg.ui.adapter.ResultsRecyclerViewAdapter
 
 import com.master.eyubero.pfg.ui.fragment.dummy.DummyContent
 import com.master.eyubero.pfg.ui.fragment.dummy.DummyContent.DummyItem
+import com.master.eyubero.pfg.ui.viewModel.ResultsViewModel
 
 /**
  * Created by Edu Yube ┌(▀Ĺ̯ ▀-͠ )┐
@@ -26,31 +32,34 @@ class ResultsFragment : Fragment() {
 
     private var columnCount = 1
 
+    private lateinit var mBinding: FragmentResultsBinding
+
     private var listener: OnListFragmentInteractionListener? = null
+    private lateinit var mViewModel: ResultsViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mViewModel = ViewModelProviders.of(this).get(ResultsViewModel::class.java)
+        mViewModel.isLoading.set(true)
+        mViewModel.isLoading.notifyChange()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_results, container, false)
-
-        val progressBar =  view.findViewById<ProgressBar>(R.id.progress_bar)
-        progressBar!!.visibility = View.VISIBLE
-        Handler().postDelayed( {
-
-            progressBar.visibility = View.GONE
-        },3000)
-
+        mBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_results, container, false)
         activity!!.title = this.javaClass.simpleName.substringBefore("Fragment")
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = ResultsRecyclerViewAdapter(DummyContent.ITEMS, listener)
-            }
-        }
-        return view
+//       if (view is RecyclerView) {
+//           with(view) {
+//               mBinding.layoutManager = when {
+//                   columnCount <= 1 -> LinearLayoutManager(context)
+//                   else -> GridLayoutManager(context, columnCount)
+//               }
+//               adapter = ResultsRecyclerViewAdapter(DummyContent.ITEMS, listener)
+//           }
+//       }
+        return mBinding.root
     }
 
     override fun onAttach(context: Context) {
