@@ -2,6 +2,7 @@ package com.master.eyubero.pfg.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import com.master.eyubero.pfg.R
 import com.master.eyubero.pfg.ui.adapter.ResultsRecyclerViewAdapter
 
@@ -28,6 +30,15 @@ class ResultsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val progressBar = activity?.findViewById<ProgressBar>(R.id.progress_bar)
+        progressBar!!.visibility = View.VISIBLE
+
+        val runnable = Runnable {
+
+            progressBar.visibility = View.GONE
+        }
+        Handler().postDelayed(runnable,3000)
 
     }
 

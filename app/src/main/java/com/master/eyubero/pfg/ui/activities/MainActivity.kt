@@ -24,14 +24,11 @@ class MainActivity : AppCompatActivity(), ResultsFragment.OnListFragmentInteract
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val transaction = supportFragmentManager.beginTransaction()
-        val progressBar = findViewById<ProgressBar>(R.id.progress_bar)
-        progressBar!!.visibility = View.VISIBLE
         val runnable = Runnable {
 
             transaction.add(ResultsFragment.newInstance(), ResultsFragment::class.java.simpleName.toString())
             transaction.disallowAddToBackStack()
             transaction.commit()
-            progressBar.visibility = View.GONE
         }
         Handler().postDelayed(runnable,3000)
     }
