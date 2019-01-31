@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import com.master.eyubero.pfg.BR
 import com.master.eyubero.pfg.R
 import com.master.eyubero.pfg.databinding.FragmentResultsBinding
 import com.master.eyubero.pfg.ui.adapter.ResultsRecyclerViewAdapter
@@ -37,18 +38,12 @@ class ResultsFragment : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var mViewModel: ResultsViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        mViewModel = ViewModelProviders.of(this).get(ResultsViewModel::class.java)
-        mViewModel.isLoading.set(true)
-        mViewModel.isLoading.notifyChange()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_results, container, false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_results, container, false)
         activity!!.title = this.javaClass.simpleName.substringBefore("Fragment")
+        mViewModel = ViewModelProviders.of(this).get(ResultsViewModel::class.java)
+
         // Set the adapter
 //       if (view is RecyclerView) {
 //           with(view) {
