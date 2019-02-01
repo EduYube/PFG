@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mSportRef: DatabaseReference
     lateinit var mUserRef: DatabaseReference
     lateinit var database: FirebaseDatabase
+    val sports = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +30,12 @@ class MainActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
 
         context = applicationContext
+        sports.add(0, "baloncesto")
+        sports.add(1, "balonmano")
+        sports.add(2, "futbol")
+        sports.add(3, "futbolSala")
+        sports.add(4, "rugby")
+        sports.add(5, "voleibol")
 
         initDataBases()
 
@@ -39,30 +46,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun initDataBases() {
         database = FirebaseDatabase.getInstance()
-//        initTeamsDB()
-//        initSportsDB()
-//        initUserDB()
-    }
-
-    private fun initUserDB() {
-
-        mUserRef = database.getReference("user")
-
-        val admin = UserModel(0,"Yube",true)
-        val user = UserModel(1,"Edu",false)
-
-        mUserRef.child("admin").setValue(admin)
-        mUserRef.child("user").setValue(user)
+        initSportsDB()
     }
 
     private fun initSportsDB() {
 
-        mSportRef = database.getReference("sport")
-        for (i in 1..3) {
-            val teamId = i.toString()
+        mSportRef = database.getReference("sports")
+        for (sportId in 0 until sports.size) {
 
-            val sport = SportModel(teamId.toInt(), "sport $i")
-            mSportRef.child("$i").addListenerForSingleValueEvent(object : ValueEventListener {
+            val sport = SportModel(sportId, sports[sportId], initTeamsDB())
+            mSportRef.child("$sportId-${sport.name}").addListenerForSingleValueEvent(object : ValueEventListener {
 
                 override fun onCancelled(p0: DatabaseError) {
                     Toast.makeText(context, "Ha habido algún error", Toast.LENGTH_LONG).show()
@@ -70,9 +63,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (!dataSnapshot.exists())
-                        mSportRef.child(teamId).setValue(sport).addOnCompleteListener {
-                            Toast.makeText(context, "Se ha añadido el deporte ${sport.name}", Toast.LENGTH_LONG).show()
-                        }
+                        mSportRef.child(sport.name).setValue(sport)
                     else
                         Toast.makeText(context, "Ya existe el deporte ${sport.name}", Toast.LENGTH_LONG).show()
                 }
@@ -80,27 +71,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initTeamsDB() {
-        mTeamRef = database.getReference("teams")
-        for (i in 1..5) {
-            val teamId = i.toString()
+    private fun initTeamsDB(): ArrayList<TeamModel> {
+        val teamList = ArrayList<TeamModel>()
+        for (teamId in 1..5) {
 
-            val team = TeamModel(teamId.toInt(), "team $i", "balonmano")
-            mTeamRef.child("$i").addListenerForSingleValueEvent(object : ValueEventListener {
-
-                override fun onCancelled(p0: DatabaseError) {
-                    Toast.makeText(context, "Ha habido algún error", Toast.LENGTH_LONG).show()
-                }
-
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (!dataSnapshot.exists())
-                        mTeamRef.child(teamId).setValue(team).addOnCompleteListener {
-                            Toast.makeText(context, "Se ha añadido el equipo ${team.name} al deporte ${team.sport}", Toast.LENGTH_LONG).show()
-                        }
-                    else
-                        Toast.makeText(context, "Ya existe el equipo ${team.name} al deporte ${team.sport}", Toast.LENGTH_LONG).show()
-                }
-            })
+            val team = TeamModel(teamId, "team $teamId")
+            teamList.add(team)
         }
+        return teamList
     }
 }
