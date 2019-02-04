@@ -32,9 +32,8 @@ class Application : Application() {
         sports.add(0, "baloncesto")
         sports.add(1, "balonmano")
         sports.add(2, "futbol")
-        sports.add(3, "futbolSala")
-        sports.add(4, "rugby")
-        sports.add(5, "voleibol")
+        sports.add(3, "rugby")
+        sports.add(4, "voleibol")
 
         initDataBases()
     }
