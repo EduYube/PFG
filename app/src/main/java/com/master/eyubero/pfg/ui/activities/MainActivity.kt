@@ -19,11 +19,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Repository().initDB()
         val transaction = supportFragmentManager.beginTransaction()
 
         transaction.replace(R.id.main_activity, ResultsFragment.newInstance(), ResultsFragment::class.java.simpleName.toString())
-        transaction.addToBackStack(null)
         transaction.commit()
 
     }

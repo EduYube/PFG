@@ -1,5 +1,6 @@
 package com.master.eyubero.pfg.ui.viewModel
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.os.Bundle
 import android.support.v4.app.FragmentTransaction
@@ -23,11 +24,11 @@ import java.io.Serializable
  */
 class ResultsViewModel : ViewModel() {
 
-    private lateinit var adapter: SportsAdapter
+    private val sportsLD = MutableLiveData<ArrayList<SportModel>>()
     private val sports = ArrayList<SportModel>()
+    private val mDtaBase = Repository().mSportRef
 
-    fun getData(mBinding: FragmentResultsBinding, transaction: FragmentTransaction) {
-        val mDtaBase = Repository().mSportRef
+    fun getData(): MutableLiveData<ArrayList<SportModel>> {
         mDtaBase.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.e("DataBaseError <3", p0.message)
@@ -39,11 +40,11 @@ class ResultsViewModel : ViewModel() {
                     if (!checkIfExist(model!!))
                         sports.add(model)
                 }
-                initRecyclerView(transaction)
-                mBinding.resultRecyclerview.adapter = adapter
+                sportsLD.postValue(sports)
             }
 
         })
+        return sportsLD
     }
 
     private fun checkIfExist(model: SportModel): Boolean {
@@ -57,18 +58,5 @@ class ResultsViewModel : ViewModel() {
             }
         }
         return exists
-    }
-
-    fun initRecyclerView(transaction: FragmentTransaction) {
-        adapter = SportsAdapter(object : onSportItemClickListener {
-            override fun onSportItemClick(sport: SportModel) {
-                val arg = Bundle()
-                arg.putSerializable("ranking", sport.ranking as Serializable)
-
-                transaction.replace(R.id.main_activity, SportRankingFragment.newInstance(), SportRankingFragment::class.java.simpleName.toString())
-                transaction.addToBackStack(null)
-                transaction.commit()
-            }
-        }, sports)
     }
 }
