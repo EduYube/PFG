@@ -16,10 +16,9 @@ import java.text.FieldPosition
  * Created by Edu Yube ┌(▀Ĺ̯ ▀-͠ )┐
  * on 03/02/2019(ノಠ益ಠ)ノ
  */
-class SportsAdapter (val listener: onSportItemClickListener): RecyclerView.Adapter<SportItemViewHolder>()  {
+class SportsAdapter (val listener: onSportItemClickListener, val sportsList: ArrayList<SportModel>): RecyclerView.Adapter<SportItemViewHolder>()  {
 
     lateinit var mBinding: LayoutItemBinding
-    val sportsList = ArrayList<SportModel>()
 
     override fun onCreateViewHolder(container: ViewGroup, viewType: Int): SportItemViewHolder {
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(container.context), R.layout.layout_item, container, false)
@@ -33,20 +32,6 @@ class SportsAdapter (val listener: onSportItemClickListener): RecyclerView.Adapt
     override fun onBindViewHolder(itemVH: SportItemViewHolder, position: Int) {
 
         val sport = sportsList[position]
-
         itemVH.bind(sport,listener)
-        mBinding.tvSportName.text = sport.name
-        when(sport.id){
-            0 -> mBinding.ivSportIcon.setImageResource(R.drawable.ic_basketball)
-            1 -> mBinding.ivSportIcon.setImageResource(R.drawable.ic_handball)
-            2 -> mBinding.ivSportIcon.setImageResource(R.drawable.ic_football)
-            3 -> mBinding.ivSportIcon.setImageResource(R.drawable.ic_rugby)
-            4 -> mBinding.ivSportIcon.setImageResource(R.drawable.ic_volleyball)
-        }
-
-    }
-
-    fun addToSportList(sport: SportModel){
-        sportsList.add(sport)
     }
 }

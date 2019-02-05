@@ -3,6 +3,7 @@ package com.master.eyubero.pfg.ui.activities
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.master.eyubero.pfg.R
+import com.master.eyubero.pfg.repository.Repository
 import com.master.eyubero.pfg.ui.fragment.ResultsFragment
 
 /**
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Repository().initDB()
         val transaction = supportFragmentManager.beginTransaction()
 
         transaction.replace(R.id.main_activity, ResultsFragment.newInstance(), ResultsFragment::class.java.simpleName.toString())

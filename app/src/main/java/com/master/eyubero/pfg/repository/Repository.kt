@@ -1,4 +1,4 @@
-package com.master.eyubero.pfg
+package com.master.eyubero.pfg.repository
 
 import android.app.Application
 import com.google.firebase.database.DatabaseReference
@@ -7,28 +7,25 @@ import com.master.eyubero.pfg.model.RankingModel
 import com.master.eyubero.pfg.model.SportModel
 import com.master.eyubero.pfg.model.TeamModel
 import com.master.eyubero.pfg.model.UserModel
-import java.lang.Math.random
 import java.util.*
-import java.util.EnumSet.range
-import kotlin.math.nextUp
+import kotlin.collections.ArrayList
 
 
 /**
  * Created by Edu Yube ┌(▀Ĺ̯ ▀-͠ )┐
  * on 01/02/2019(ノಠ益ಠ)ノ
  */
-class Application : Application() {
+class Repository {
 
-    lateinit var mSportRef: DatabaseReference
-    lateinit var database: FirebaseDatabase
+    val database = FirebaseDatabase.getInstance()
+    val mSportRef = database.getReference("sports")
     val sports = ArrayList<String>()
 
     val teamList = ArrayList<TeamModel>()
     val rankingList = ArrayList<RankingModel>()
 
-    override fun onCreate() {
+    fun initDB() {
 
-        super.onCreate()
         sports.add(0, "baloncesto")
         sports.add(1, "balonmano")
         sports.add(2, "futbol")
@@ -41,7 +38,6 @@ class Application : Application() {
 
     private fun initDataBases() {
 
-        database = FirebaseDatabase.getInstance()
         initSportsDB()
         initUserDB()
     }
@@ -56,7 +52,6 @@ class Application : Application() {
 
     private fun initSportsDB() {
 
-        mSportRef = database.getReference("sports")
         for (sportId in 0 until sports.size) {
 
             val sport = SportModel(sportId, sports[sportId], initTeamsDB(), initRankingDB())
@@ -66,6 +61,7 @@ class Application : Application() {
 
     private fun initTeamsDB(): ArrayList<TeamModel> {
 
+        teamList.clear()
         for (teamId in 1..5) {
 
             val team = TeamModel(teamId, "team $teamId")
@@ -76,8 +72,9 @@ class Application : Application() {
 
     private fun initRankingDB(): ArrayList<RankingModel> {
 
+        rankingList.clear()
         for (team in 0 until teamList.size) {
-            val ranking = RankingModel(team+1,teamList[team],Random().nextInt(21-0))
+            val ranking = RankingModel(team + 1, teamList[team], Random().nextInt(21 - 0))
             rankingList.add(ranking)
         }
         return rankingList

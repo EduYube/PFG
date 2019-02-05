@@ -10,6 +10,7 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.master.eyubero.pfg.R
+import com.master.eyubero.pfg.repository.Repository
 
 class SplashActivity : AppCompatActivity() {
 
