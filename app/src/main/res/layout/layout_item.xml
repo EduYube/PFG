@@ -4,6 +4,7 @@
 
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,6 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/v_divisor"
             app:layout_constraintEnd_toStartOf="@id/iv_go_ranking"
             app:layout_constraintStart_toEndOf="@id/iv_sport_icon"
@@ -39,7 +42,6 @@
         <View
             android:id="@+id/v_divisor"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_sport_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
