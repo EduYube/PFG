@@ -57,27 +57,23 @@ class ResultsFragment : Fragment() {
 
     fun getData() {
         mViewModel.getData().observe(this, Observer {
-            initRecyclerView(transaction!!, it)
+            initRecyclerView(it)
         })
     }
 
     override fun onResume() {
         super.onResume()
-        val transaction = fragmentManager!!.beginTransaction()
-
-        mViewModel.getData().observe(this, Observer {
-            initRecyclerView(transaction, it)
-        })
+        getData()
     }
 
-    fun initRecyclerView(transaction: FragmentTransaction, sports: ArrayList<SportModel>?) {
+    fun initRecyclerView(sports: ArrayList<SportModel>?) {
         adapter = SportsAdapter(object : onSportItemClickListener {
             override fun onSportItemClick(sport: SportModel) {
                 val arg = Bundle()
                 arg.putSerializable("ranking", sport.ranking as Serializable)
 
-                transaction.replace(R.id.main_activity, SportRankingFragment.newInstance(), SportRankingFragment::class.java.simpleName.toString())
-                transaction.commit()
+                transaction!!.replace(R.id.main_activity, SportRankingFragment.newInstance(), SportRankingFragment::class.java.simpleName.toString())
+                transaction!!.commit()
             }
         }, sports!!)
 
