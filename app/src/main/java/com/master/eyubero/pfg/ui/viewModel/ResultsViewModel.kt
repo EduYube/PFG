@@ -2,20 +2,12 @@ package com.master.eyubero.pfg.ui.viewModel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.os.Bundle
-import android.support.v4.app.FragmentTransaction
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.master.eyubero.pfg.R
-import com.master.eyubero.pfg.databinding.FragmentResultsBinding
-import com.master.eyubero.pfg.listeners.onSportItemClickListener
 import com.master.eyubero.pfg.model.SportModel
 import com.master.eyubero.pfg.repository.Repository
-import com.master.eyubero.pfg.ui.adapter.SportsAdapter
-import com.master.eyubero.pfg.ui.fragment.SportRankingFragment
-import java.io.Serializable
 
 
 /**

@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager
 import com.master.eyubero.pfg.listeners.onSportItemClickListener
 import com.master.eyubero.pfg.model.SportModel
 import com.master.eyubero.pfg.ui.adapter.SportsAdapter
-import java.io.Serializable
 
 
 /**
@@ -31,13 +30,17 @@ class ResultsFragment : Fragment() {
     private lateinit var adapter: SportsAdapter
     var transaction: FragmentTransaction? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewModel = ViewModelProviders.of(this).get(ResultsViewModel::class.java)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_results, container, false)
         activity!!.title = this.javaClass.simpleName.substringBefore("Fragment")
 
         transaction = fragmentManager!!.beginTransaction()
-        mViewModel = ViewModelProviders.of(this).get(ResultsViewModel::class.java)
 
 
         val linearLayoutManager = LinearLayoutManager(context)
@@ -69,10 +72,9 @@ class ResultsFragment : Fragment() {
     fun initRecyclerView(sports: ArrayList<SportModel>?) {
         adapter = SportsAdapter(object : onSportItemClickListener {
             override fun onSportItemClick(sport: SportModel) {
-                val arg = Bundle()
-                arg.putSerializable("ranking", sport.ranking as Serializable)
 
                 transaction!!.replace(R.id.main_activity, SportRankingFragment.newInstance(), SportRankingFragment::class.java.simpleName.toString())
+                transaction!!.addToBackStack(null)
                 transaction!!.commit()
             }
         }, sports!!)
