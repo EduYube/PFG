@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "484934542183",
+    "firebase_url": "https://pfg-resultados-upm.firebaseio.com",
+    "project_id": "pfg-resultados-upm",
+    "storage_bucket": "pfg-resultados-upm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484934542183:android:7f021b7316f18b27",
+        "android_client_info": {
+          "package_name": "com.master.eyubero.pfg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484934542183-m3vbd5eka62c22bs25asesughkfe776k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.master.eyubero.pfg",
+            "certificate_hash": "b4ca2e40ac8326735d648224e7a3f76fbb07161d"
+          }
+        },
+        {
+          "client_id": "484934542183-fv9ck6c384118t01og80d0fms9f0nmfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC74DJoXRk48igiWFKcAI4RMHbgYy0y29E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484934542183-fv9ck6c384118t01og80d0fms9f0nmfj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
