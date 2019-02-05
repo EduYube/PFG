@@ -29,6 +29,7 @@ class ResultsViewModel : ViewModel() {
     private val mDtaBase = Repository().mSportRef
 
     fun getData(): MutableLiveData<ArrayList<SportModel>> {
+        sports.clear()
         mDtaBase.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.e("DataBaseError <3", p0.message)
