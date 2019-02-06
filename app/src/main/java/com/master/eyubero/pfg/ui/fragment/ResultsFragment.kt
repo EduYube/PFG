@@ -2,7 +2,9 @@ package com.master.eyubero.pfg.ui.fragment
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.databinding.DataBindingUtil
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
@@ -59,9 +61,21 @@ class ResultsFragment : Fragment() {
     }
 
     fun getData() {
-        mViewModel.getData().observe(this, Observer {
-            initRecyclerView(it)
-        })
+        if (isConnected(context!!))
+            mViewModel.getData().observe(this, Observer {
+                initRecyclerView(it)
+            })
+        else
+            mViewModel.getDataWOInternet().observe(this, Observer {
+                initRecyclerView(it)
+            })
+    }
+
+    fun isConnected(context: Context): Boolean {
+
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connection = manager.activeNetworkInfo
+        return connection != null && connection.isConnectedOrConnecting
     }
 
     override fun onResume() {
