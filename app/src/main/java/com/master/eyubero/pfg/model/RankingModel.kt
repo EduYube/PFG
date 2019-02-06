@@ -6,12 +6,10 @@ package com.master.eyubero.pfg.model
  */
 class RankingModel {
 
-    var position: Int? = null
     var team: TeamModel? = null
     var points: Int? = null
 
-    constructor(position: Int, team: TeamModel, points: Int){
-        this.position = position
+    constructor(team: TeamModel, points: Int){
         this.team = team
         this.points = points
     }
