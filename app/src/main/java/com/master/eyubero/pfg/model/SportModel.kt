@@ -9,12 +9,14 @@ class SportModel {
     var name: String? = null
     var teams: List<TeamModel>? = null
     var ranking: List<RankingModel>? = null
+    var matches: ArrayList<MatchModel>? = null
 
-    constructor(id: Int, name: String, teams: List<TeamModel>,ranking: List<RankingModel>){
+    constructor(id: Int, name: String, teams: List<TeamModel>, ranking: List<RankingModel>, matches: ArrayList<MatchModel>){
         this.id = id
         this.name = name
         this.teams = teams
         this.ranking = ranking
+        this.matches = matches
     }
     constructor(){}
 }
