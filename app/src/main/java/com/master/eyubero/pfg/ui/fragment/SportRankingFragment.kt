@@ -3,7 +3,6 @@ package com.master.eyubero.pfg.ui.fragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.Gravity
@@ -18,16 +17,18 @@ import com.master.eyubero.pfg.ui.viewModel.ResultsViewModel
 import android.widget.*
 import android.widget.TextView
 import android.graphics.drawable.GradientDrawable
+import com.master.eyubero.pfg.model.MatchModel
 
 
 class SportRankingFragment : Fragment() {
     private var rankingList: ArrayList<RankingModel>? = null
+    private var matchesList: ArrayList<MatchModel>? = null
     private lateinit var mViewModel: ResultsViewModel
     private lateinit var mBinding: FragmentSportRankingBinding
     var sport: String? = null
     val mTextViewBorderWidth = 4
-    val mTableBorderWidth = mTextViewBorderWidth * 2
-    var tableLayout: TableLayout? = null
+    var rankingTableLayout: TableLayout? = null
+    var matchesTableLayout: TableLayout? = null
     var positions: List<RankingModel>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +42,7 @@ class SportRankingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sport_ranking, container, false)
+        activity!!.title = sport!!.capitalize()
         getRanking()
 
         mBinding.swipeRefresh.setOnRefreshListener {
@@ -48,7 +50,8 @@ class SportRankingFragment : Fragment() {
             mBinding.swipeRefresh.isRefreshing = false
         }
 
-        tableLayout = mBinding.tlRanking
+        rankingTableLayout = mBinding.tlRanking
+        matchesTableLayout = mBinding.tlMatches
 
         return mBinding.root
     }
@@ -60,7 +63,13 @@ class SportRankingFragment : Fragment() {
         mViewModel.getRanking(sport!!).observe(this, Observer {
             rankingList = it
             setPositions()
-            initTable()
+            initRanking()
+        })
+
+        mViewModel.getMatches(sport!!).observe(this, Observer{
+            matchesList = it
+            mViewModel.getRanking(sport!!)
+            initMatches()
         })
     }
 
@@ -68,12 +77,51 @@ class SportRankingFragment : Fragment() {
         positions = rankingList!!.sortedByDescending { it.points }
     }
 
-    private fun initTable() {
-        tableLayout!!.removeAllViews()
+    private fun initMatches() {
+        matchesTableLayout!!.removeAllViews()
 
-        tableLayout!!.isStretchAllColumns = true
-        tableLayout!!.background = borderDrawable(mTableBorderWidth)
-        tableLayout!!.setPadding(mTableBorderWidth, mTableBorderWidth, mTableBorderWidth, mTableBorderWidth)
+        matchesTableLayout!!.isStretchAllColumns = true
+        matchesTableLayout!!.setPadding(mTextViewBorderWidth, mTextViewBorderWidth, mTextViewBorderWidth, mTextViewBorderWidth)
+
+        for (currentRow in 0 until matchesList!!.size) {
+            val tableRow = TableRow(activity)
+
+            val localTeam = TextView(activity)
+            val score = TextView(activity)
+            val awayTeam = TextView(activity)
+
+            localTeam.background = mBinding.root.context.getDrawable(R.drawable.bg_match)
+            score.background = mBinding.root.context.getDrawable(R.drawable.bg_match)
+            awayTeam.background = mBinding.root.context.getDrawable(R.drawable.bg_match)
+
+            localTeam.setPadding(10, 10, 10, 10)
+            score.setPadding(10, 10, 10, 10)
+            awayTeam.setPadding(10, 10, 10, 10)
+
+            localTeam.gravity = Gravity.CENTER
+            score.gravity = Gravity.CENTER
+            awayTeam.gravity = Gravity.CENTER
+
+            localTeam.text = matchesList!![currentRow].local
+            score.text = matchesList!![currentRow].score
+            awayTeam.text = matchesList!![currentRow].away
+
+            tableRow.addView(localTeam)
+            tableRow.addView(score)
+            tableRow.addView(awayTeam)
+
+            tableRow.setBackgroundColor(activity!!.resources.getColor(R.color.colorAccent))
+
+            matchesTableLayout!!.addView(tableRow)
+        }
+    }
+
+    private fun initRanking() {
+        rankingTableLayout!!.removeAllViews()
+
+        rankingTableLayout!!.isStretchAllColumns = true
+        rankingTableLayout!!.background = borderDrawable(mTextViewBorderWidth)
+        rankingTableLayout!!.setPadding(mTextViewBorderWidth, mTextViewBorderWidth, mTextViewBorderWidth, mTextViewBorderWidth)
 
         for (currentRow in 0 until positions!!.size) {
             val tableRow = TableRow(activity)
@@ -104,7 +152,7 @@ class SportRankingFragment : Fragment() {
 
             tableRow.setBackgroundColor(activity!!.resources.getColor(R.color.colorAccent))
 
-            tableLayout!!.addView(tableRow)
+            rankingTableLayout!!.addView(tableRow)
         }
     }
 

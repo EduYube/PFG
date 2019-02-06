@@ -5,4 +5,5 @@
     <color name="colorAccent">#FFF</color>
     <color name="blue_upm">#0072CE</color>
     <color name="black">#000</color>
+    <color name="grey">#aaa</color>
 </resources>
