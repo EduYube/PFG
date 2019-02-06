@@ -109,21 +109,27 @@ class SportRankingFragment : Fragment() {
     }
 
     fun setIcon(): Int {
+        mBinding.llHeader.gravity = Gravity.CENTER
         var icon: Int? = null
         when (sport) {
             "baloncesto" -> {
+                mBinding.llHeader.background = mBinding.root.context.resources.getDrawable(R.drawable.bg_basket)
                 icon = R.drawable.ic_basketball
             }
             "balonmano" -> {
+                mBinding.llHeader.background = mBinding.root.context.resources.getDrawable(R.drawable.bg_handball)
                 icon = R.drawable.ic_handball
             }
             "futbol" -> {
+                mBinding.llHeader.background = mBinding.root.context.resources.getDrawable(R.drawable.bg_football)
                 icon = R.drawable.ic_football
             }
             "rugby" -> {
+                mBinding.llHeader.background = mBinding.root.context.resources.getDrawable(R.drawable.bg_rugby)
                 icon = R.drawable.ic_rugby
             }
             "voleibol" -> {
+                mBinding.llHeader.background = mBinding.root.context.resources.getDrawable(R.drawable.bg_voley)
                 icon = R.drawable.ic_volleyball
             }
         }
