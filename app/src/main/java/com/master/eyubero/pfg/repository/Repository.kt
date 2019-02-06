@@ -55,7 +55,7 @@ class Repository {
         for (sportId in 0 until sports.size) {
 
             val sport = SportModel(sportId, sports[sportId], initTeamsDB(), initRankingDB())
-            mSportRef.child("$sportId-${sport.name}").setValue(sport)
+            mSportRef.child("${sport.name}").setValue(sport)
         }
     }
 
@@ -74,7 +74,7 @@ class Repository {
 
         rankingList.clear()
         for (team in 0 until teamList.size) {
-            val ranking = RankingModel(team + 1, teamList[team], Random().nextInt(21 - 0))
+            val ranking = RankingModel(teamList[team], Random().nextInt(21 - 0))
             rankingList.add(ranking)
         }
         return rankingList

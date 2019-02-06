@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.master.eyubero.pfg.model.RankingModel
 import com.master.eyubero.pfg.model.SportModel
 import com.master.eyubero.pfg.repository.Repository
 
@@ -18,6 +19,8 @@ class ResultsViewModel : ViewModel() {
 
     private val sportsLD = MutableLiveData<ArrayList<SportModel>>()
     private val sports = ArrayList<SportModel>()
+    private val rankingLD = MutableLiveData<ArrayList<RankingModel>>()
+    private val ranking = ArrayList<RankingModel>()
     private val mDtaBase = Repository().mSportRef
 
     fun getData(): MutableLiveData<ArrayList<SportModel>> {
@@ -38,6 +41,25 @@ class ResultsViewModel : ViewModel() {
 
         })
         return sportsLD
+    }
+
+    fun getRanking(sport: String): MutableLiveData<ArrayList<RankingModel>> {
+        mDtaBase.child(sport).child("ranking").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                Log.e("error <3", p0.message)
+            }
+
+            override fun onDataChange(data: DataSnapshot) {
+                ranking.clear()
+                for(rank in data.children) {
+                    val model = rank.getValue(RankingModel::class.java)
+                    ranking.add(model!!)
+                }
+                rankingLD.postValue(ranking)
+            }
+
+        })
+        return rankingLD
     }
 
     private fun checkIfExist(model: SportModel): Boolean {

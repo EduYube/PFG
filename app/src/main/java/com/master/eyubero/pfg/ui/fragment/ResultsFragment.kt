@@ -73,7 +73,12 @@ class ResultsFragment : Fragment() {
         adapter = SportsAdapter(object : onSportItemClickListener {
             override fun onSportItemClick(sport: SportModel) {
 
-                transaction!!.replace(R.id.main_activity, SportRankingFragment.newInstance(), SportRankingFragment::class.java.simpleName.toString())
+                val fragment = SportRankingFragment.newInstance()
+                val args = Bundle()
+                args.putString("sport", sport.name)
+                fragment.arguments = args
+
+                transaction!!.replace(R.id.main_activity, fragment, SportRankingFragment::class.java.simpleName.toString())
                 transaction!!.addToBackStack(null)
                 transaction!!.commit()
             }
