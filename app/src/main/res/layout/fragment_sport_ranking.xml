@@ -69,8 +69,9 @@
                     android:id="@+id/tl_matches"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="25dp"
                     android:layout_marginTop="50dp"
-                    android:layout_marginBottom="50dp"
+                    app:layout_constraintBottom_toTopOf="@id/add_result"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tl_ranking">
@@ -82,6 +83,38 @@
                         android:gravity="center"
                         android:textSize="20sp" />
                 </TableLayout>
+
+                <LinearLayout
+                    android:id="@+id/add_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tl_matches">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:text="@string/new_result"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fab_result"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="10dp"
+                        android:elevation="15dp"
+                        android:src="@drawable/ic_add" />
+                </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>
