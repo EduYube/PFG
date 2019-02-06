@@ -11,7 +11,7 @@ class SportModel {
     var ranking: List<RankingModel>? = null
     var matches: ArrayList<MatchModel>? = null
 
-    constructor(id: Int, name: String, teams: List<TeamModel>, ranking: List<RankingModel>, matches: ArrayList<MatchModel>){
+    constructor(id: Int, name: String, teams: List<TeamModel>, matches: ArrayList<MatchModel>, ranking: List<RankingModel>){
         this.id = id
         this.name = name
         this.teams = teams
