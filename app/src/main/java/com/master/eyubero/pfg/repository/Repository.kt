@@ -1,6 +1,10 @@
 package com.master.eyubero.pfg.repository
 
+import android.util.Log
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.master.eyubero.pfg.model.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,20 +27,34 @@ class Repository {
 
     fun initDB() {
 
-        sports.add(0, "baloncesto")
-        sports.add(1, "balonmano")
-        sports.add(2, "futbol")
-        sports.add(3, "rugby")
-        sports.add(4, "voleibol")
+        mSportRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                Log.e("error <3", p0.message)
+            }
 
-        teams.add(0, "ETSISI")
-        teams.add(1, "ETSIST")
-        teams.add(2, "ETSIDI")
-        teams.add(3, "ETSII")
-        teams.add(4, "INEF")
-        teams.add(5, "ETSIAE")
+            override fun onDataChange(data: DataSnapshot) {
+                if (!data.exists()) {
+                    mSportRef.keepSynced(true)
 
-        initDataBases()
+                    sports.add(0, "baloncesto")
+                    sports.add(1, "balonmano")
+                    sports.add(2, "futbol")
+                    sports.add(3, "rugby")
+                    sports.add(4, "voleibol")
+
+                    teams.add(0, "ETSISI")
+                    teams.add(1, "ETSIST")
+                    teams.add(2, "ETSIDI")
+                    teams.add(3, "ETSII")
+                    teams.add(4, "INEF")
+                    teams.add(5, "ETSIAE")
+
+                    initDataBases()
+                }
+            }
+
+        })
+
     }
 
 

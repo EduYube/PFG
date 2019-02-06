@@ -2,6 +2,7 @@ package com.master.eyubero.pfg.ui.fragment
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -18,6 +19,12 @@ import android.widget.*
 import android.widget.TextView
 import android.graphics.drawable.GradientDrawable
 import com.master.eyubero.pfg.model.MatchModel
+import android.net.NetworkInfo
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.support.v4.content.ContextCompat.getSystemService
+import android.net.ConnectivityManager
+
+
 
 
 class SportRankingFragment : Fragment() {
@@ -43,10 +50,16 @@ class SportRankingFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sport_ranking, container, false)
         activity!!.title = sport!!.capitalize()
-        getRanking()
+        if(isConnected(context!!))
+            getRanking()
+        else
+            getRankingWOInternet()
 
         mBinding.swipeRefresh.setOnRefreshListener {
-            getRanking()
+            if(isConnected(context!!))
+                getRanking()
+            else
+                getRankingWOInternet()
             mBinding.swipeRefresh.isRefreshing = false
         }
 
@@ -54,6 +67,30 @@ class SportRankingFragment : Fragment() {
         matchesTableLayout = mBinding.tlMatches
 
         return mBinding.root
+    }
+
+    fun isConnected(context: Context): Boolean {
+
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connection = manager.activeNetworkInfo
+        return connection != null && connection.isConnectedOrConnecting
+    }
+
+    private fun getRankingWOInternet() {
+
+        mBinding.ivSport.setImageResource(setIcon())
+        mBinding.tvSport.text = sport!!.toUpperCase()
+        mViewModel.getRankingWOInternet(sport!!).observe(this, Observer {
+            rankingList = it
+            setPositions()
+            initRanking()
+        })
+
+        mViewModel.getMatchesWOInternet(sport!!).observe(this, Observer{
+            matchesList = it
+            mViewModel.getRanking(sport!!)
+            initMatches()
+        })
     }
 
     fun getRanking() {
