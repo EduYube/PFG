@@ -8,6 +8,10 @@ import android.content.Intent
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
+import com.master.eyubero.pfg.ui.fragment.LoginFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.master.eyubero.pfg.ui.fragment.LogoutFragment
 
 
 /**
@@ -19,14 +23,16 @@ class MainActivity : AppCompatActivity() {
 
     var count = 0
     var view: View? = null
+    private var mAuth: FirebaseAuth? = null
+    var currentUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        mAuth = FirebaseAuth.getInstance()
         view = findViewById(R.id.main_activity)
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.main_activity, ResultsFragment.newInstance(), ResultsFragment::class.java.simpleName.toString())
             transaction.addToBackStack(null)
@@ -34,14 +40,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        currentUser = mAuth!!.currentUser
+    }
+
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 1 ){
+        if (supportFragmentManager.backStackEntryCount > 1) {
             supportFragmentManager.popBackStack()
             count = 0
         } else {
-            if(count < 1){
+            if (count < 1) {
                 count++
-                Toast.makeText(this,"Si pulsa una segunda vez, saldrá de la appliación",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Si pulsa una segunda vez, saldrá de la appliación", Toast.LENGTH_LONG).show()
             } else {
                 val intent = Intent(Intent.ACTION_MAIN)
                 intent.addCategory(Intent.CATEGORY_HOME)
@@ -54,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         val inflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu)
+        inflater.inflate(R.menu.login_menu, menu)
 
         return true
 
@@ -73,16 +84,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun showMenu() {
         val pm = PopupMenu(this, view)
-        pm.menuInflater.inflate(R.menu.main_menu, pm.menu)
-        pm.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-
-                R.id.action_login -> {
-                    Toast.makeText(this, "Login", Toast.LENGTH_LONG).show()
-                }
-
+        if(currentUser == null) {
+            pm.menuInflater.inflate(R.menu.login_menu, pm.menu)
+            pm.setOnMenuItemClickListener {
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.main_activity, LoginFragment.newInstance(), LoginFragment::class.java.simpleName.toString())
+                transaction.addToBackStack(null)
+                transaction.commit()
+                true
             }
-            true
+        } else {
+            pm.menuInflater.inflate(R.menu.logout_menu, pm.menu)
+            pm.setOnMenuItemClickListener {
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.main_activity, LogoutFragment.newInstance(), LogoutFragment::class.java.simpleName.toString())
+                transaction.addToBackStack(null)
+                transaction.commit()
+                true
+            }
         }
         pm.show()
     }

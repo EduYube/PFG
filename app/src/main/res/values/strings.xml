@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Resultados UPM</string>
     <string name="login">Logar como Admin</string>
+    <string name="email">Introduce el e-mail</string>
+    <string name="password">Introduce la contraseña</string>
+    <string name="go_to_login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="new_result">Introduce un nuevo resultado</string>
 </resources>
