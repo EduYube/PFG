@@ -44,12 +44,10 @@ class ResultsFragment : Fragment() {
 
         transaction = fragmentManager!!.beginTransaction()
 
-
         val linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         mBinding.resultRecyclerview.layoutManager = linearLayoutManager
         mBinding.resultRecyclerview.setHasFixedSize(true)
-
 
         getData()
         mBinding.swipeRefresh.setOnRefreshListener {

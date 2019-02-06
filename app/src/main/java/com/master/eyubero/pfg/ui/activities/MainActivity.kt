@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.master.eyubero.pfg.R
 import com.master.eyubero.pfg.ui.fragment.ResultsFragment
 import android.content.Intent
+import android.view.*
+import android.widget.PopupMenu
 import android.widget.Toast
 
 
@@ -16,10 +18,13 @@ import android.widget.Toast
 class MainActivity : AppCompatActivity() {
 
     var count = 0
+    var view: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        view = findViewById(R.id.main_activity)
 
         if(savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
@@ -44,6 +49,42 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+
+        return true
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item!!.itemId){
+            R.id.action_login ->{
+                showMenu()
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun showMenu() {
+        val pm = PopupMenu(this, view)
+        pm.menuInflater.inflate(R.menu.main_menu, pm.menu)
+        pm.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+
+                R.id.action_login -> {
+                    Toast.makeText(this, "Login", Toast.LENGTH_LONG).show()
+                }
+
+            }
+            true
+        }
+        pm.show()
     }
 
 }

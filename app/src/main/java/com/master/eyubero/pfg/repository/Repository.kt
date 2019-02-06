@@ -54,22 +54,12 @@ class Repository {
             }
 
         })
-
     }
 
 
     private fun initDataBases() {
 
         initSportsDB()
-        initUserDB()
-    }
-
-    private fun initUserDB() {
-
-        val mUserRef = database.getReference("users")
-
-        val admin = UserModel(0, "Yubero", true)
-        mUserRef.child(admin.user).setValue(admin)
     }
 
     private fun initSportsDB() {
