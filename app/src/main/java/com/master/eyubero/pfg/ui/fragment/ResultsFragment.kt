@@ -15,6 +15,8 @@ import com.master.eyubero.pfg.R
 import com.master.eyubero.pfg.databinding.FragmentResultsBinding
 import com.master.eyubero.pfg.ui.viewModel.ResultsViewModel
 import android.support.v7.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.master.eyubero.pfg.listeners.onSportItemClickListener
 import com.master.eyubero.pfg.model.SportModel
 import com.master.eyubero.pfg.ui.adapter.SportsAdapter
@@ -31,9 +33,13 @@ class ResultsFragment : Fragment() {
     private lateinit var mViewModel: ResultsViewModel
     private lateinit var adapter: SportsAdapter
     var transaction: FragmentTransaction? = null
+    private var mAuth: FirebaseAuth? = null
+    var currentUser: FirebaseUser? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mAuth = FirebaseAuth.getInstance()
         mViewModel = ViewModelProviders.of(this).get(ResultsViewModel::class.java)
     }
 
@@ -78,6 +84,7 @@ class ResultsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        currentUser = mAuth!!.currentUser
         getData()
     }
 
