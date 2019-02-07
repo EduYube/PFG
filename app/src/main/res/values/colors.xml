@@ -2,8 +2,15 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FFF</color>
+    <color name="colorAccent">#f00</color>
     <color name="blue_upm">#0072CE</color>
+    <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="grey">#aaa</color>
+    <color name="brown">#cc6600</color>
+    <color name="blue">#4da6ff</color>
+    <color name="red">#ff3300</color>
+    <color name="pink">#ff66cc</color>
+    <color name="orange">#ffa64d</color>
+    <color name="green">#35e664</color>
 </resources>
