@@ -3,9 +3,7 @@ package com.master.eyubero.pfg.ui.viewModel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.master.eyubero.pfg.model.MatchModel
 import com.master.eyubero.pfg.model.RankingModel
 import com.master.eyubero.pfg.model.SportModel
@@ -153,5 +151,24 @@ class ResultsViewModel : ViewModel() {
             }
         }
         return exists
+    }
+
+    fun saveResult(local: String, score: String, away: String, mMatchesDB: DatabaseReference, mRankingDB: DatabaseReference) {
+
+        for (i in 0 until matches.size) {
+
+            if (matches[i].away == away.toUpperCase() && matches[i].local == local.toUpperCase()) {
+                matches[i].score = score
+                mMatchesDB.setValue(matches)
+                for (id in 0 until ranking.size) {
+                    if (local.toUpperCase() == ranking[id].team!!.name)
+                        ranking[id].points = Repository().setPoints(ranking[id].team!!,matches)
+                    if (away.toUpperCase() == ranking[id].team!!.name)
+                        ranking[id].points = Repository().setPoints(ranking[id].team!!,matches)
+
+                }
+                mRankingDB.setValue(ranking)
+            }
+        }
     }
 }

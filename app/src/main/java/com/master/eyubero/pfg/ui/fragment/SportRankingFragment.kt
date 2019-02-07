@@ -1,5 +1,6 @@
 package com.master.eyubero.pfg.ui.fragment
 
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -7,10 +8,6 @@ import android.content.res.ColorStateList
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 
 import com.master.eyubero.pfg.R
 import com.master.eyubero.pfg.databinding.FragmentSportRankingBinding
@@ -22,29 +19,46 @@ import android.graphics.drawable.GradientDrawable
 import com.master.eyubero.pfg.model.MatchModel
 import android.net.ConnectivityManager
 import android.support.v4.content.ContextCompat
+import android.view.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.master.eyubero.pfg.databinding.CustomLayoutBinding
+import com.master.eyubero.pfg.repository.Repository
 
 
 class SportRankingFragment : Fragment() {
     private var rankingList: ArrayList<RankingModel>? = null
     private var matchesList: ArrayList<MatchModel>? = null
+
     private lateinit var mViewModel: ResultsViewModel
     private lateinit var mBinding: FragmentSportRankingBinding
+    lateinit var mDialogBinding: CustomLayoutBinding
+
     var sport: String? = null
+
     val mTextViewBorderWidth = 4
     var rankingTableLayout: TableLayout? = null
     var matchesTableLayout: TableLayout? = null
     var positions: List<RankingModel>? = null
+
     private var mAuth: FirebaseAuth? = null
     var currentUser: FirebaseUser? = null
 
+    lateinit var dialogs: Dialog
+
+    lateinit var mDataBase: DatabaseReference
+    lateinit var mMatchesDB: DatabaseReference
+    lateinit var mRankingDB: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sport = arguments!!.getString("sport")
         mAuth = FirebaseAuth.getInstance()
+        mDataBase = Repository().mSportRef.child(sport!!)
+        mMatchesDB = mDataBase.child("matches")
+        mRankingDB = mDataBase.child("ranking")
         currentUser = mAuth!!.currentUser
         mViewModel = ViewModelProviders.of(this).get(ResultsViewModel::class.java)
     }
@@ -57,14 +71,24 @@ class SportRankingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sport_ranking, container, false)
+        mDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_layout, container, false)
+
+        dialogs = Dialog(activity)
+        dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogs.setCancelable(false)
+        dialogs.setContentView(mDialogBinding.root)
         activity!!.title = sport!!.capitalize()
+
         if (isConnected(context!!))
             getRanking()
         else
             getRankingWOInternet()
         if (currentUser != null) {
             mBinding.addResult.visibility = View.VISIBLE
-            mBinding.fabResult.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(mBinding.root.context,setFABBackgroundColor()))
+            mBinding.fabResult.setOnClickListener {
+                showDialog()
+            }
+            mBinding.fabResult.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(mBinding.root.context, setFABBackgroundColor()))
         } else {
             mBinding.addResult.visibility = View.GONE
         }
@@ -81,6 +105,27 @@ class SportRankingFragment : Fragment() {
         matchesTableLayout = mBinding.tlMatches
 
         return mBinding.root
+    }
+
+    private fun showDialog() {
+
+        mDialogBinding.tietLocal.setText("")
+        mDialogBinding.tietScore.setText("")
+        mDialogBinding.tietAway.setText("")
+        mDialogBinding.tietLocal.requestFocus()
+        mDialogBinding.btYes.setOnClickListener {
+
+            val local = mDialogBinding.tietLocal.text.toString()
+            val score = mDialogBinding.tietScore.text.toString()
+            val away = mDialogBinding.tietAway.text.toString()
+            mViewModel.saveResult(local, score, away, mMatchesDB, mRankingDB)
+            dialogs.dismiss()
+        }
+        mDialogBinding.btNo.setOnClickListener {
+            dialogs.dismiss()
+        }
+        dialogs.show()
+
     }
 
     fun isConnected(context: Context): Boolean {

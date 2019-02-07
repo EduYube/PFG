@@ -23,7 +23,7 @@ class Repository {
 
     val teamList = ArrayList<TeamModel>()
     val rankingList = ArrayList<RankingModel>()
-    val dateList = ArrayList<MatchModel>()
+    var dateList = ArrayList<MatchModel>()
 
     fun initDB() {
 
@@ -33,7 +33,7 @@ class Repository {
             }
 
             override fun onDataChange(data: DataSnapshot) {
-                if (!data.exists()) {
+                if (data.exists()) {
                     mSportRef.keepSynced(true)
 
                     sports.add(0, "baloncesto")
@@ -86,7 +86,7 @@ class Repository {
                 }
                 2 -> {
                     val match1 = MatchModel(teams[0], teams[2], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match2 = MatchModel(teams[2], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match2 = MatchModel(teams[1], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
                     val match3 = MatchModel(teams[4], teams[3], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
                     dateList.add(match1)
                     dateList.add(match2)
@@ -94,8 +94,8 @@ class Repository {
                 }
                 3 -> {
                     val match1 = MatchModel(teams[0], teams[3], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match2 = MatchModel(teams[2], teams[4], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match3 = MatchModel(teams[1], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match2 = MatchModel(teams[2], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match3 = MatchModel(teams[4], teams[1], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
                     dateList.add(match1)
                     dateList.add(match2)
                     dateList.add(match3)
@@ -103,15 +103,15 @@ class Repository {
                 4 -> {
                     val match1 = MatchModel(teams[0], teams[4], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
                     val match2 = MatchModel(teams[2], teams[1], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match3 = MatchModel(teams[3], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match3 = MatchModel(teams[5], teams[3], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
                     dateList.add(match1)
                     dateList.add(match2)
                     dateList.add(match3)
                 }
                 5 -> {
                     val match1 = MatchModel(teams[0], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match2 = MatchModel(teams[2], teams[3], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match3 = MatchModel(teams[4], teams[1], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match2 = MatchModel(teams[2], teams[4], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match3 = MatchModel(teams[3], teams[1], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
                     dateList.add(match1)
                     dateList.add(match2)
                     dateList.add(match3)
@@ -136,14 +136,16 @@ class Repository {
 
         rankingList.clear()
         for (team in 0 until teamList.size) {
-            val ranking = RankingModel(teamList[team], setPoints(teamList[team]))
+            val ranking = RankingModel(teamList[team], setPoints(teamList[team], dateList))
             rankingList.add(ranking)
         }
         return rankingList
     }
 
-    private fun setPoints(team: TeamModel): Int {
+    fun setPoints(team: TeamModel, matches: ArrayList<MatchModel>): Int {
         var points = 0
+        if(dateList.size == 0)
+            dateList = matches
         for (i in 0 until dateList.size) {
             var local = false
             var away = false
