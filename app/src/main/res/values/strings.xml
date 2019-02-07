@@ -6,4 +6,13 @@
     <string name="go_to_login">Login</string>
     <string name="logout">Logout</string>
     <string name="new_result">Introduce un nuevo resultado</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="title">Are you sure you want to quit?</string>
+    <string name="score_hint">Resultado formato exacto X-X</string>
+    <string name="local_team_hint">Equipo Local</string>
+    <string name="away_team_hint">Equipo Visitante</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Guardar</string>
+    <string name="dialog_title">Añadir Resultado</string>
 </resources>
