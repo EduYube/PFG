@@ -25,13 +25,13 @@ class ResultsViewModel : ViewModel() {
     private val mDtaBase = Repository().mSportRef
 
     fun getData(): MutableLiveData<ArrayList<SportModel>> {
-        sports.clear()
         mDtaBase.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.e("DataBaseError <3", p0.message)
             }
 
             override fun onDataChange(data: DataSnapshot) {
+                sports.clear()
                 for (sport in data.children) {
                     val model = sport.getValue(SportModel::class.java)
                     if (!checkIfExist(model!!))
@@ -45,13 +45,13 @@ class ResultsViewModel : ViewModel() {
     }
 
     fun getDataWOInternet(): MutableLiveData<ArrayList<SportModel>> {
-        sports.clear()
         mDtaBase.limitToLast(10).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.e("DataBaseError <3", p0.message)
             }
 
             override fun onDataChange(data: DataSnapshot) {
+                sports.clear()
                 for (sport in data.children) {
                     val model = sport.getValue(SportModel::class.java)
                     if (!checkIfExist(model!!))
