@@ -77,41 +77,41 @@ class Repository {
         for (date in 1 until teamList.size) {
             when (date) {
                 1 -> {
-                    val match1 = MatchModel(teams[0], teams[1], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match2 = MatchModel(teams[2], teams[3], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match3 = MatchModel(teams[4], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match1 = MatchModel(teams[0], teams[1], " - ")
+                    val match2 = MatchModel(teams[2], teams[3], " - ")
+                    val match3 = MatchModel(teams[4], teams[5], " - ")
                     dateList.add(match1)
                     dateList.add(match2)
                     dateList.add(match3)
                 }
                 2 -> {
-                    val match1 = MatchModel(teams[0], teams[2], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match2 = MatchModel(teams[1], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match3 = MatchModel(teams[4], teams[3], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match1 = MatchModel(teams[0], teams[2], " - ")
+                    val match2 = MatchModel(teams[1], teams[5], " - ")
+                    val match3 = MatchModel(teams[4], teams[3], " - ")
                     dateList.add(match1)
                     dateList.add(match2)
                     dateList.add(match3)
                 }
                 3 -> {
-                    val match1 = MatchModel(teams[0], teams[3], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match2 = MatchModel(teams[2], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match3 = MatchModel(teams[4], teams[1], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match1 = MatchModel(teams[0], teams[3], " - ")
+                    val match2 = MatchModel(teams[2], teams[5], " - ")
+                    val match3 = MatchModel(teams[4], teams[1], " - ")
                     dateList.add(match1)
                     dateList.add(match2)
                     dateList.add(match3)
                 }
                 4 -> {
-                    val match1 = MatchModel(teams[0], teams[4], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match2 = MatchModel(teams[2], teams[1], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match3 = MatchModel(teams[5], teams[3], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match1 = MatchModel(teams[0], teams[4], " - ")
+                    val match2 = MatchModel(teams[2], teams[1], " - ")
+                    val match3 = MatchModel(teams[5], teams[3], " - ")
                     dateList.add(match1)
                     dateList.add(match2)
                     dateList.add(match3)
                 }
                 5 -> {
-                    val match1 = MatchModel(teams[0], teams[5], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match2 = MatchModel(teams[2], teams[4], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
-                    val match3 = MatchModel(teams[3], teams[1], "${Random().nextInt(5 - 0)}-${Random().nextInt(5 - 0)}")
+                    val match1 = MatchModel(teams[0], teams[5], " - ")
+                    val match2 = MatchModel(teams[2], teams[4], " - ")
+                    val match3 = MatchModel(teams[3], teams[1], " - ")
                     dateList.add(match1)
                     dateList.add(match2)
                     dateList.add(match3)
@@ -144,7 +144,7 @@ class Repository {
 
     fun setPoints(team: TeamModel, matches: ArrayList<MatchModel>): Int {
         var points = 0
-        if(dateList.size == 0)
+        if (dateList.size == 0)
             dateList = matches
         for (i in 0 until dateList.size) {
             var local = false
@@ -162,10 +162,12 @@ class Repository {
                 val score = dateList[i].score
                 val localScore = score!!.substringBefore("-")
                 val awayScore = score.substringAfter("-")
-                if ((localScore.toInt() > awayScore.toInt() && local) || (localScore.toInt() < awayScore.toInt() && away)) {
-                    points += 3
-                } else if (localScore.toInt() == awayScore.toInt())
-                    points += 1
+                if (localScore != " " && awayScore != "") {
+                    if ((localScore.toInt() > awayScore.toInt() && local) || (localScore.toInt() < awayScore.toInt() && away)) {
+                        points += 3
+                    } else if (localScore.toInt() == awayScore.toInt())
+                        points += 1
+                }
             }
 
 
