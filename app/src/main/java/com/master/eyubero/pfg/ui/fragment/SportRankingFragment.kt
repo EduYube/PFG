@@ -208,6 +208,11 @@ class SportRankingFragment : Fragment() {
 
             tableRow.setBackgroundColor(activity!!.resources.getColor(R.color.white))
 
+            mViewModel.saveResult(matchesList!![currentRow].local!!,
+                    matchesList!![currentRow].score!!,
+                    matchesList!![currentRow].away!!,
+                    mMatchesDB,
+                    mRankingDB)
             matchesTableLayout!!.addView(tableRow)
         }
     }
