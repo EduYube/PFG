@@ -65,14 +65,19 @@ class ResultsFragment : Fragment() {
     }
 
     fun getData() {
-        if (isConnected(context!!))
+        mBinding.progressBar.visibility = View.VISIBLE
+        mBinding.progressBar.isIndeterminate = true
+
+        if (isConnected(context!!)) {
             mViewModel.getData().observe(this, Observer {
                 initRecyclerView(it)
             })
-        else
+
+        }else {
             mViewModel.getDataWOInternet().observe(this, Observer {
                 initRecyclerView(it)
             })
+        }
     }
 
     fun isConnected(context: Context): Boolean {
@@ -104,6 +109,8 @@ class ResultsFragment : Fragment() {
         }, sports!!)
 
         mBinding.resultRecyclerview.adapter = adapter
+        mBinding.progressBar.visibility = View.GONE
+        mBinding.progressBar.isIndeterminate = false
     }
 
     companion object {
