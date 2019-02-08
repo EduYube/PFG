@@ -33,7 +33,7 @@ class Repository {
             }
 
             override fun onDataChange(data: DataSnapshot) {
-                if (data.exists()) {
+                if (!data.exists()) {
                     mSportRef.keepSynced(true)
 
                     sports.add(0, "baloncesto")
