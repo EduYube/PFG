@@ -13,13 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.master.eyubero.pfg.R
 import com.master.eyubero.pfg.databinding.FragmentResultsBinding
-import com.master.eyubero.pfg.ui.viewModel.ResultsViewModel
 import android.support.v7.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.master.eyubero.pfg.listeners.onSportItemClickListener
 import com.master.eyubero.pfg.model.SportModel
 import com.master.eyubero.pfg.ui.adapter.SportsAdapter
+import com.master.eyubero.pfg.ui.viewModel.SportsViewModel
 
 
 /**
@@ -30,7 +30,7 @@ import com.master.eyubero.pfg.ui.adapter.SportsAdapter
 class ResultsFragment : Fragment() {
 
     private lateinit var mBinding: FragmentResultsBinding
-    private lateinit var mViewModel: ResultsViewModel
+    private lateinit var mViewModel: SportsViewModel
     private lateinit var adapter: SportsAdapter
     var transaction: FragmentTransaction? = null
     private var mAuth: FirebaseAuth? = null
@@ -40,7 +40,7 @@ class ResultsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
-        mViewModel = ViewModelProviders.of(this).get(ResultsViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this).get(SportsViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
