@@ -8,14 +8,13 @@
 
         <variable
             name="viewModel"
-            type="com.master.eyubero.pfg.ui.viewModel.ResultsViewModel" />
+            type="com.master.eyubero.pfg.ui.viewModel.SportsViewModel" />
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -26,28 +25,27 @@
             tools:context=".ui.fragment.ResultsFragment"
             tools:listitem="@layout/layout_item">
 
-            <!--        <ProgressBar
-                        android:id="@+id/progress_bar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#fff"
-                        android:indeterminate="true"
-                        android:indeterminateTint="#1a09d6"
-                        android:max="100"
-                        android:visibility="@{viewModel.loading}" /> -->
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#fff"
+                android:indeterminate="true"
+                android:indeterminateTint="#1a09d6"
+                android:max="100"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/result_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/progress_bar" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
