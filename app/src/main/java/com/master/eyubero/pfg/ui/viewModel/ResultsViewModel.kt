@@ -21,6 +21,7 @@ class ResultsViewModel : ViewModel() {
     private val matchesLD = MutableLiveData<ArrayList<MatchModel>>()
     private val matches = ArrayList<MatchModel>()
     private val mDtaBase = Repository().mSportRef
+    var exists = MutableLiveData<Boolean>()
 
     fun getMatchesWOInternet(sport: String): MutableLiveData<ArrayList<MatchModel>> {
         mDtaBase.child(sport).child("matches").limitToLast(10).addValueEventListener(object : ValueEventListener {
@@ -113,6 +114,7 @@ class ResultsViewModel : ViewModel() {
                         ranking[id].points = Repository().setPoints(ranking[id].team!!,matches)
 
                 }
+                exists.postValue(true)
                 mRankingDB.setValue(ranking)
             }
         }

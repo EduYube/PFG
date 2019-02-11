@@ -128,11 +128,18 @@ class SportRankingFragment : Fragment() {
         mDialogBinding.tietLocal.requestFocus()
         mDialogBinding.btYes.setOnClickListener {
             showLoading()
+            mViewModel.exists.postValue(false)
             val local = mDialogBinding.tietLocal.text.toString()
             val score = mDialogBinding.tietScore.text.toString()
             val away = mDialogBinding.tietAway.text.toString()
             mViewModel.saveResult(local, score, away, mMatchesDB, mRankingDB)
             dialogs.dismiss()
+            mViewModel.exists.observe(this, Observer<Boolean> {
+                if (!it!!)
+                    Toast.makeText(context, "No se ha podido modificar el resultado. Asegúrese del orden y de los nombres de los equipos", Toast.LENGTH_LONG).show()
+                else
+                    Toast.makeText(context, "El cambio se ha realizado correctamente", Toast.LENGTH_LONG).show()
+            })
             hideLoading()
         }
         mDialogBinding.btNo.setOnClickListener {

@@ -39,6 +39,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
+                    android:gravity="center"
+                    android:textAllCaps="true"
                     android:nextFocusDown="@id/til_pass"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -47,6 +49,7 @@
                 android:id="@+id/til_score"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:hint="@string/score_hint">
 
@@ -55,6 +58,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number|text"
+                    android:gravity="center"
+                    android:textAllCaps="true"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
@@ -70,6 +75,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
+                    android:textAllCaps="true"
+                    android:gravity="center"
                     android:nextFocusDown="@id/til_pass"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
