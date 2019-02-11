@@ -79,6 +79,7 @@ class SportRankingFragment : Fragment() {
         dialogs.setContentView(mDialogBinding.root)
         activity!!.title = sport!!.capitalize()
 
+        showLoading()
         if (isConnected(context!!))
             getRanking()
         else
@@ -107,6 +108,18 @@ class SportRankingFragment : Fragment() {
         return mBinding.root
     }
 
+    fun showLoading() {
+
+        mBinding.progressBar.visibility = View.VISIBLE
+        mBinding.progressBar.isIndeterminate = true
+    }
+
+    fun hideLoading() {
+
+        mBinding.progressBar.visibility = View.GONE
+        mBinding.progressBar.isIndeterminate = false
+    }
+
     private fun showDialog() {
 
         mDialogBinding.tietLocal.setText("")
@@ -114,12 +127,20 @@ class SportRankingFragment : Fragment() {
         mDialogBinding.tietAway.setText("")
         mDialogBinding.tietLocal.requestFocus()
         mDialogBinding.btYes.setOnClickListener {
-
+            showLoading()
+            mViewModel.exists.postValue(false)
             val local = mDialogBinding.tietLocal.text.toString()
             val score = mDialogBinding.tietScore.text.toString()
             val away = mDialogBinding.tietAway.text.toString()
             mViewModel.saveResult(local, score, away, mMatchesDB, mRankingDB)
             dialogs.dismiss()
+            mViewModel.exists.observe(this, Observer<Boolean> {
+                if (!it!!)
+                    Toast.makeText(context, "No se ha podido modificar el resultado. Asegúrese del orden y de los nombres de los equipos", Toast.LENGTH_LONG).show()
+                else
+                    Toast.makeText(context, "El cambio se ha realizado correctamente", Toast.LENGTH_LONG).show()
+            })
+            hideLoading()
         }
         mDialogBinding.btNo.setOnClickListener {
             dialogs.dismiss()
@@ -136,7 +157,7 @@ class SportRankingFragment : Fragment() {
     }
 
     private fun getRankingWOInternet() {
-
+        showLoading()
         mBinding.ivSport.setImageResource(setIcon())
         mBinding.tvSport.text = sport!!.toUpperCase()
         mViewModel.getRankingWOInternet(sport!!).observe(this, Observer {
@@ -153,7 +174,7 @@ class SportRankingFragment : Fragment() {
     }
 
     fun getRanking() {
-
+        showLoading()
         mBinding.ivSport.setImageResource(setIcon())
         mBinding.tvSport.text = sport!!.toUpperCase()
         mViewModel.getRanking(sport!!).observe(this, Observer {
@@ -208,8 +229,14 @@ class SportRankingFragment : Fragment() {
 
             tableRow.setBackgroundColor(activity!!.resources.getColor(R.color.white))
 
+            mViewModel.saveResult(matchesList!![currentRow].local!!,
+                    matchesList!![currentRow].score!!,
+                    matchesList!![currentRow].away!!,
+                    mMatchesDB,
+                    mRankingDB)
             matchesTableLayout!!.addView(tableRow)
         }
+        hideLoading()
     }
 
     private fun initRanking() {
@@ -250,6 +277,7 @@ class SportRankingFragment : Fragment() {
 
             rankingTableLayout!!.addView(tableRow)
         }
+        hideLoading()
     }
 
     fun setIcon(): Int {

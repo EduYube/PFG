@@ -27,10 +27,11 @@ class LogoutFragment : Fragment() {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_logout, container, false)
 
         activity!!.title = this.javaClass.simpleName.substringBefore("Fragment")
+
+        mBinding.tvUserEmail.text = mAuth.currentUser!!.email
         mBinding.btLogout.setOnClickListener {
             mAuth.signOut()
             returnToMain()
-
         }
 
         return mBinding.root

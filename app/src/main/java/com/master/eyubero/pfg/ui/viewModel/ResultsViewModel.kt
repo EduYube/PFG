@@ -16,53 +16,12 @@ import com.master.eyubero.pfg.repository.Repository
  */
 class ResultsViewModel : ViewModel() {
 
-    private val sportsLD = MutableLiveData<ArrayList<SportModel>>()
-    private val sports = ArrayList<SportModel>()
     private val rankingLD = MutableLiveData<ArrayList<RankingModel>>()
     private val ranking = ArrayList<RankingModel>()
     private val matchesLD = MutableLiveData<ArrayList<MatchModel>>()
     private val matches = ArrayList<MatchModel>()
     private val mDtaBase = Repository().mSportRef
-
-    fun getData(): MutableLiveData<ArrayList<SportModel>> {
-        sports.clear()
-        mDtaBase.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                Log.e("DataBaseError <3", p0.message)
-            }
-
-            override fun onDataChange(data: DataSnapshot) {
-                for (sport in data.children) {
-                    val model = sport.getValue(SportModel::class.java)
-                    if (!checkIfExist(model!!))
-                        sports.add(model)
-                }
-                sportsLD.postValue(sports)
-            }
-
-        })
-        return sportsLD
-    }
-
-    fun getDataWOInternet(): MutableLiveData<ArrayList<SportModel>> {
-        sports.clear()
-        mDtaBase.limitToLast(10).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                Log.e("DataBaseError <3", p0.message)
-            }
-
-            override fun onDataChange(data: DataSnapshot) {
-                for (sport in data.children) {
-                    val model = sport.getValue(SportModel::class.java)
-                    if (!checkIfExist(model!!))
-                        sports.add(model)
-                }
-                sportsLD.postValue(sports)
-            }
-
-        })
-        return sportsLD
-    }
+    var exists = MutableLiveData<Boolean>()
 
     fun getMatchesWOInternet(sport: String): MutableLiveData<ArrayList<MatchModel>> {
         mDtaBase.child(sport).child("matches").limitToLast(10).addValueEventListener(object : ValueEventListener {
@@ -140,18 +99,6 @@ class ResultsViewModel : ViewModel() {
         return rankingLD
     }
 
-    private fun checkIfExist(model: SportModel): Boolean {
-
-        var exists = false
-        for (i in 0 until sports.size) {
-
-            if (sports[i].id == model.id || sports[i].name == model.name) {
-                exists = true
-                break
-            }
-        }
-        return exists
-    }
 
     fun saveResult(local: String, score: String, away: String, mMatchesDB: DatabaseReference, mRankingDB: DatabaseReference) {
 
@@ -167,6 +114,7 @@ class ResultsViewModel : ViewModel() {
                         ranking[id].points = Repository().setPoints(ranking[id].team!!,matches)
 
                 }
+                exists.postValue(true)
                 mRankingDB.setValue(ranking)
             }
         }

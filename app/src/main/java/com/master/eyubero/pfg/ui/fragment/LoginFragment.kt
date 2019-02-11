@@ -27,30 +27,33 @@ class LoginFragment : Fragment() {
 
         activity!!.title = this.javaClass.simpleName.substringBefore("Fragment")
         mBinding.btLogin.setOnClickListener { it ->
-            mAuth.signInWithEmailAndPassword(mBinding.tietUser.text.toString(), mBinding.tietPass.text.toString())
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("succed <3", "signInWithEmail:success")
-                            val user = mAuth.currentUser
+            if (mBinding.tietUser.text!!.isNotEmpty() && mBinding.tietPass.text!!.isNotEmpty()) {
+                mAuth.signInWithEmailAndPassword(mBinding.tietUser.text.toString(), mBinding.tietPass.text.toString())
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("succed <3", "signInWithEmail:success")
+                                val user = mAuth.currentUser
 
-                            Toast.makeText(context, "${user!!.email} logado correctamente", Toast.LENGTH_SHORT).show()
-                            returnToMain()
+                                Toast.makeText(context, "${user!!.email} logado correctamente", Toast.LENGTH_SHORT).show()
+                                returnToMain()
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("error <3", "signInWithEmail:failure", it.exception)
-                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("error <3", "signInWithEmail:failure", it.exception)
+                                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                            }
+
                         }
-
-                    }
+            } else
+                Toast.makeText(context, "Debes rellenar los campos", Toast.LENGTH_LONG).show()
         }
 
         return mBinding.root
     }
 
     private fun returnToMain() {
-        val intent = Intent(context,MainActivity::class.java)
+        val intent = Intent(context, MainActivity::class.java)
         startActivity(intent)
     }
 
